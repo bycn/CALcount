@@ -5,7 +5,7 @@ var request = require('request');
 var api_key = "Pjez9iI0fGDdsxSlXFENKpm1Kifi0wHidVRAenTK";
 module.exports = function(req,res,next){
 
-	var searchTerm = "raw broccoli";
+	var searchTerm = req.query.food;
 	var ndbno;
 	request("https://api.nal.usda.gov/ndb/search/?format=json&q="+searchTerm+"&ds=Standard Reference&sort=r&max=25&offset=0&api_key=" + api_key, function (error, response, body) {
   	console.log('error:', error); // Print the error if one occurred
