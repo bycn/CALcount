@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use("/",express.static(path.join(__dirname, 'views')));
 
 app.use("/food-data", food_data);
-app.use("/calorie-details", calorie-details);
+app.use("/calorie-details", calorie_details);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
