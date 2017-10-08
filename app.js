@@ -14,7 +14,7 @@ var User = require('./models/Users.js');
 var food_data = require("./endpoints/food-data.js");
 var calorie_details = require("./endpoints/calorie-details.js");
 var signup = require("./endpoints/signup.js");
-
+var meals = require("./endpoints/meals.js");
 var app = express();
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -27,6 +27,7 @@ app.use("/",express.static(path.join(__dirname, 'views')));
 app.use("/food-data", food_data);
 app.use("/calorie-details", calorie_details);
 app.use("/signup", signup);
+app.use("/meals", meals);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
