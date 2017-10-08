@@ -5,7 +5,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  Button
 } from 'react-native';
 
 export default class MainView extends React.Component {
@@ -67,17 +68,32 @@ export default class MainView extends React.Component {
         <Text style={styles.heading}>
           Welcome to CalCounter
         </Text>
-        <TouchableOpacity>
-          <Text onPress={() => this.onPress()}>
-            Continue
-          </Text>
-        </TouchableOpacity>
+        <Button style={{
+          borderRadius: 10,
+          backgroundColor: 'green',
+          width: '80%'
+        }} title="Continue"
+          onPress={() => this.onPress()} />
         {loggedIn ?
-        <TouchableOpacity onPress={() => this.onLogout()}>
-          <Text>Logout</Text>
-        </TouchableOpacity> :
-        <TouchableOpacity onPress={() => this.onLogin()}>
-          <Text>Login with Google</Text>
+        <Button style={{
+          backgroundColor: 'red',
+          width: '80%'
+        }} onPress={() => this.onLogout()}
+          title="Logout"
+          color="red"/> :
+        <TouchableOpacity style={{
+          borderRadius: 10,
+          backgroundColor: 'blue',
+          width: '80%',
+          borderRadius: 10,
+          borderWidth: 1,
+          paddingTop: 10,
+          paddingBottom: 10,
+          borderColor: 'white'
+        }} onPress={() => this.onLogin()}>
+          <Text style={{color: 'white', fontSize: 20, textAlign: 'center'}}>
+            Login with Google
+          </Text>
         </TouchableOpacity>}
       </View>
     );

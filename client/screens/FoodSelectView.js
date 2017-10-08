@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
   TouchableOpacity,
   AsyncStorage,
   ActivityIndicator,
@@ -94,6 +95,17 @@ export default class FoodSelectView extends React.Component {
               height: 200
             }}
           >
+            <Button
+              title="Calculate calories"
+              color="green"
+              onPress={() => {
+                this.props.navigation.navigate(
+                  'NutrientView',
+                  { foods: this.state.foods.filter(f => f.checked).map(f => f.food),
+                    photo }
+                )
+              }}
+            />
             <ListView
               dataSource={this.state.dataSource}
               renderRow={(food, sId, rId) => {

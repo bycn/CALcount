@@ -5,6 +5,7 @@ import { StackNavigator } from 'react-navigation';
 import MainView from './screens/MainView';
 import CameraView from './screens/CameraView';
 import FoodSelectView from './screens/FoodSelectView';
+import NutrientView from './screens/NutrientView';
 
 const MainStackNavigator = StackNavigator({
   MainView: {
@@ -15,6 +16,9 @@ const MainStackNavigator = StackNavigator({
   },
   FoodSelectView: {
     screen: FoodSelectView,
+  },
+  NutrientView: {
+    screen: NutrientView,
   },
 }, {
     navigationOptions: {
