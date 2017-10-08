@@ -3,7 +3,7 @@
  */
 var api_key = process.env.API_KEY
 var request = require('request');
-
+console.log(api_key)
 module.exports = function(req,res,next){
     if(!req.query.sourceImageUrl){
         res.end(404)
