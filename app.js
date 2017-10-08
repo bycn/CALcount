@@ -10,8 +10,8 @@ var request = require('request');
 
 
 var app = express();
-
-
+var api_key = process.env.API_KEY
+console.log(api_key)
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -21,21 +21,47 @@ app.use(cookieParser());
 app.use("/",express.static(path.join(__dirname, 'views')));
 
 app.use("/message", function(req,res,next){
+    var headers = {
+        "requests": [
+            {
+                "image": {
+                    "source": {
+                        "imageUri": req.query.sourceImageUrl
+                    }
+                },
+                "features": [
+                    {
+                        "type": "LABEL_DETECTION"
+                    }
+                ]
+            }
+        ]
+    }
     request.post({
-        headers: {'content-type' : 'application/json',
-                  'Ocp-Apim-Subscription-Key' : 'fb3bae4c99b04ef29f4f8d9531511d18'
-        },
-        url:     'https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/analyze?visualFeatures=Tags',
-        body:    "{url: '" + req.query.sourceImage + "'}"
+        headers: {'content-type' : 'application/json'},
+        url:     'https://vision.googleapis.com/v1/images:annotate?key=' + api_key,
+        body:   JSON.stringify(headers)
     }, function(error, response, body){
         if (error) return next(error);
-        data = JSON.parse(body).tags
-        tags = []
-        for(var i = 0; i < data.length; i++){
-            tags[i] = data[i]["name"]
-        }
-        console.log(tags)
-        res.json(body)
+        console.log(api_key)
+        console.log('https://vision.googleapis.com/v1/images:annotate?key=' + api_key)
+        data = JSON.parse(body).responses
+        console.log(data)
+        //tags = []
+        //for(var i = 0; i < data.length; i++){
+        //    tags[i] = data[i]["name"]
+        //}
+        //console.log(tags)
+        //tags = tags.filter(function(e){
+        //    wrong_words = ["plate","dish","food","table","meal","dinner"]
+        //    for(var i = 0; i <  wrong_words.length; i++){
+        //        if (e == wrong_words[i]){
+        //            return false
+        //        }
+        //    }
+        //    return true
+        //})
+        res.json(data)
     });
 
 })
