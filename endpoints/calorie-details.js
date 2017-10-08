@@ -29,8 +29,7 @@ module.exports = function(req,res,next){
  		result.nutrients = nutrients;
  		var LIMIT = 10
  		var count = Math.min(firstFoodNutrients.length , LIMIT);
- 		var i;
- 		for( i = 0; i < count; i++){
+ 		for( var i = 0; i < count; i++){
  			var startNutrient = firstFoodNutrients[i];
  			var name = startNutrient.name;
  			var value = startNutrient.value + " " + startNutrient.unit;
