@@ -5,6 +5,7 @@ var api_key = process.env.API_KEY
 var request = require('request');
 console.log(api_key)
 module.exports = function(req,res,next){
+    req.query.sourceImageUrl = decodeURIComponent(req.query.sourceImageUrl);
     if(!req.query.sourceImageUrl){
         res.end(404)
     }
@@ -13,7 +14,7 @@ module.exports = function(req,res,next){
             {
                 "image": {
                     "source": {
-                        "imageUri": req.query.sourceImageUrl
+                        "imageUri": req.query.sourceImageUrl)
                     }
                 },
                 "features": [
@@ -26,7 +27,7 @@ module.exports = function(req,res,next){
     };
     request.post({
         headers: {'content-type' : 'application/json'},
-        url:     'https://vision.googleapis.com/v1/images:annotate?key=' + api_key,
+        url:     'https://content-vision.googleapis.com/v1/images:annotate?key=' + api_key,
         body:   JSON.stringify(headers)
     }, function(error, response, body){
         if (error) return next(error);
