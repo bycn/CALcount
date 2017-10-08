@@ -4,7 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var xml = require('xml');
 var request = require('request');
 var food_data = require("./endpoints/food-data.js");
 var calorie_details = require("./endpoints/calorie-details.js");
