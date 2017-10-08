@@ -1,49 +1,61 @@
-var AWS = require('aws-sdk/dist/aws-sdk-react-native');
-var b64 = require('base-64');
-var blobUtil = require('blob-util');
+// var AWS = require('aws-sdk/dist/aws-sdk-react-native');
+import { Config, Credentials, STS, S3 } from 'aws-sdk/dist/aws-sdk-react-native';
+const Buffer = require('buffer').Buffer;
 
 export default class UploaderService {
   constructor(token) {
-    AWS.config.region = 'us-west-1';
+    console.log(token)
+    Config.region = 'us-west-1';
 
-    AWS.config.credentials = new AWS.WebIdentityCredentials({
+    const credentials = {
       RoleArn: 'arn:aws:iam::016340868115:role/CalCountGoogleAuth',
+      RoleSessionName: 'Session',
       WebIdentityToken: token,
-    });
+    };
 
-    this.s3 = new AWS.S3({
-      apiVersion: '2006-03-01',
-      params: {Bucket: 'calcount'}
+    this.sts = new STS();
+    this.sts.assumeRoleWithWebIdentity(credentials, (err, data) => {
+      if (err) console.log(err);
+      console.log(data)
+      this.credentials = data.Credentials;
     });
-  }
-
-  async _srcToFile(src, fileName, mimeType){
-    return (fetch(src)
-      .then((res) => res.arrayBuffer())
-      .then((buf) => new File([buf], fileName, { type: mimeType }))
-    );
   }
 
   async upload(base64, url) {
-    const fileName = `${new Date().toLocaleDateString()}${url.substring(url.lastIndexOf('/'))}`;
-    
-    return blobUtil.imgSrcToBlob(url).then((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      return new Promise((resolve, reject) => {
-        this.s3.upload({
-          Key: fileName,
-          Body: reader.files[0],
-        }, (err, data) => {
-          if (err) console.log(err);
-          resolve(data);
-        });
+    const fileName = `${url.substring(url.lastIndexOf('/') + 1)}`;
+    console.log('uploading...') 
+    this.s3 = new S3({
+      accessKeyId: this.credentials.AccessKeyId,
+      expireTime: new Date(this.credentials.Expiration),
+      secretAccessKey: this.credentials.SecretAccessKey,
+      sessionToken: this.credentials.SessionToken,
+      region: 'us-west-1'
+    });
+
+    return new Promise((resolve, reject) => {
+      this.s3.putObject({
+        Bucket: 'calcount',
+        Key: fileName,
+        Body: new Buffer(base64, 'base64'),
+        ContentEncoding: 'base64',
+        ContentType: 'image/jpeg',
+      }, (err, data) => {
+        if (err) console.log(err);
+        resolve(fileName);
       });
-    }).catch(err => console.log(err));
-    // const file = new Blob([b64.decode(base64)], {
-    //   type: 'image/jpeg',
-    //   encoding: 'utf-8',
-    // });
+    });
+  }
+
+  async getUrl(key) {
+    return new Promise((resolve, reject) => {
+      this.s3.getSignedUrl('getObject', {
+        Bucket: 'calcount',
+        Key: key
+      }, (err, url) => {
+        if (err) console.log(err);
+        resolve(url);
+      });
+    });
   }
 
 }

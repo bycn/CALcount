@@ -18,15 +18,17 @@ export default class CameraView extends React.Component {
   }
 
   async onPress() {
-    const token = AsyncStorage.getItem('accessToken');
-    const uploader = new UploaderService(token);
     let photo = await this.camera.takePictureAsync({ base64: true });
-    let data = await uploader.upload(photo.base64, photo.uri);
-    console.log(data);
+    let data = await this.uploader.upload(photo.base64, photo.uri);
+    let url = await this.uploader.getUrl(data);
+
+    console.log(url);
   }
 
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    const token = await AsyncStorage.getItem('accessToken');
+    this.uploader = new UploaderService(token);
     this.setState({ hasPermission: status === 'granted' });
   }
 

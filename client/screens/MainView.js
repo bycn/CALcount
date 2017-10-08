@@ -36,15 +36,22 @@ export default class MainView extends React.Component {
     }
   }
 
+  async onLogout() {
+    await AsyncStorage.removeItem('accessToken');
+    this.setState({ loggedIn: false, token: null });
+  }
+
   async authWithGoogleAsync() {
     try {
       const result = await Expo.Google.logInAsync({
-        iosClientId: '8901212433-t9ob81muvov2crmk114im7hgaskeha16.apps.googleusercontent.com',
+        iosClientId: '8901212433-1p726ntk73dqrsc2lob5926ajp6ebb14.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       });
 
+      console.log(result);
+
       if (result.type === 'success') {
-        return { success: true, token: result.accessToken };
+        return { success: true, token: result.idToken };
       } else {
         return { cancelled: true };
       }
@@ -65,7 +72,10 @@ export default class MainView extends React.Component {
             Continue
           </Text>
         </TouchableOpacity>
-        {loggedIn ? (<Text>{token}</Text>) :
+        {loggedIn ?
+        <TouchableOpacity onPress={() => this.onLogout()}>
+          <Text>Logout</Text>
+        </TouchableOpacity> :
         <TouchableOpacity onPress={() => this.onLogin()}>
           <Text>Login with Google</Text>
         </TouchableOpacity>}
