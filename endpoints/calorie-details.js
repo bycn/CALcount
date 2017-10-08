@@ -30,13 +30,22 @@ module.exports = function(req,res,next){
  		var nutrients = [];
  		result.nutrients = nutrients;
  		//console.log(result);
- 		firstFoodNutrients.forEach(function(startNutrient){
+ 		var count = Math.min(firstFoodNutrients.length , 10);
+ 		for(var i = 0, parseInt(i) <= parseInt(count), i++){
+ 			var startNutrient = firstFoodNutrients[i];
  			var name = startNutrient.name;
  			var value = startNutrient.value + " " + startNutrient.unit;
  			var nutrient = {};
  			nutrient[name.toString()] = value;
  			result.nutrients.push(nutrient);
- 		});
+ 		}
+ 		// firstFoodNutrients.forEach(function(startNutrient){
+ 		// 	var name = startNutrient.name;
+ 		// 	var value = startNutrient.value + " " + startNutrient.unit;
+ 		// 	var nutrient = {};
+ 		// 	nutrient[name.toString()] = value;
+ 		// 	result.nutrients.push(nutrient);
+ 		// });
  		
  		res.send(result);
  		
