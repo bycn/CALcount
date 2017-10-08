@@ -1,8 +1,8 @@
 {
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 1236,
-  "expoServerNgrokUrl": "https://tq-uii.ethanlee.client.exp.direct",
-  "packagerNgrokUrl": "https://packager.tq-uii.ethanlee.client.exp.direct",
-  "ngrokPid": 29636
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

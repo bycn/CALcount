@@ -1,14 +1,28 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+
+import MainView from './screens/MainView';
+import CameraView from './screens/CameraView';
+
+const MainStackNavigator = StackNavigator({
+  MainView: {
+    screen: MainView,
+  },
+  CameraView: {
+    screen: CameraView,
+  }
+}, {
+    navigationOptions: {
+      header: null,
+    },
+    initialRouteName: 'MainView',
+});
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.heading}>
-          Welcome to CalCounter
-        </Text>
-      </View>
+      <MainStackNavigator />
     );
   }
 }
