@@ -19,10 +19,9 @@ export default class CameraView extends React.Component {
 
   async onPress() {
     let photo = await this.camera.takePictureAsync({ base64: true });
-    let data = await this.uploader.upload(photo.base64, photo.uri);
-    let url = await this.uploader.getUrl(data);
-
-    console.log(url);
+    this.props.navigation.navigate('FoodSelectView', {
+      photo, uploader: this.uploader
+    });
   }
 
   async componentWillMount() {

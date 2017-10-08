@@ -15,7 +15,7 @@ export default class UploaderService {
 
     this.sts = new STS();
     this.sts.assumeRoleWithWebIdentity(credentials, (err, data) => {
-      if (err) console.log(err);
+      if (err) return console.log(err);
       console.log(data)
       this.credentials = data.Credentials;
     });
@@ -23,7 +23,7 @@ export default class UploaderService {
 
   async upload(base64, url) {
     const fileName = `${url.substring(url.lastIndexOf('/') + 1)}`;
-    console.log('uploading...') 
+    console.log('uploading...');
     this.s3 = new S3({
       accessKeyId: this.credentials.AccessKeyId,
       expireTime: new Date(this.credentials.Expiration),
